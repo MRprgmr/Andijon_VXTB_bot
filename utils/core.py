@@ -47,6 +47,7 @@ async def check_all_channels(user: User):
         except Exception:
             user.is_allowed = False
             await stoa(user.save)()
+            return False
     user.is_allowed = True
     await stoa(user.save)()
     return True
