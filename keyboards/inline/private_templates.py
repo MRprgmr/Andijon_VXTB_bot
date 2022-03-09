@@ -52,7 +52,7 @@ def get_all_districts():
     if districts.count() & 1:
         keyboard_list.append(
             [
-                InlineKeyboardButton(text=districts.last().title, callback_data=district_callback.new(id=districts.last.id))
+                InlineKeyboardButton(text=districts.last().title, callback_data=district_callback.new(id=districts.last().id))
             ]
         )
     keyboard = InlineKeyboardMarkup(
