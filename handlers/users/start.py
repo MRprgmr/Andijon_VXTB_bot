@@ -1,3 +1,4 @@
+import logging
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.dispatcher.storage import FSMContext
@@ -54,6 +55,8 @@ async def input_full_name(message: Message, state: FSMContext):
     """Get user full name"""
 
     user: User = await get_user(message.from_user)
+
+    logging.info(f"{message.text} {user.first_name}")
 
     user.full_name = message.text
     await stoa(user.save)()
