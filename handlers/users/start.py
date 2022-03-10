@@ -56,8 +56,6 @@ async def input_full_name(message: Message, state: FSMContext):
 
     user: User = await get_user(message.from_user)
 
-    logging.info(f"{message.text} {user.first_name}")
-
     user.full_name = message.text
     await stoa(user.save)()
     
