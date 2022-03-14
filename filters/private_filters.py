@@ -20,6 +20,7 @@ class full_name_filter(BoundFilter):
         if len(fullname) == 2 and (await is_valid(fullname[0])) and (await is_valid(fullname[1])):
             return True
         else:
+            await message.answer("Familiya ismingizni ketma-ket kiriting, masalan:\n\n<b>👉   Alisherov Valisher</b>")
             return False
 
 class IsAdmin(BoundFilter):
