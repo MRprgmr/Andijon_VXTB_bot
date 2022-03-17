@@ -35,6 +35,14 @@ def get_back_button():
     return back_button
 
 
+cancel_button = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="🚫 Bekor qilish")]
+    ],
+    resize_keyboard=True
+)
+
+
 def get_user_settings(user: User):
     """Return user settings"""
 
