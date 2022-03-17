@@ -16,6 +16,7 @@ def get_required_channels_checker(user):
     """Return checker message of channels that need to be joined"""
 
     text = f"Assalomu alaykum, <b>{user.first_name}</b>,\nushbu bot Andijon Xalq Ta'limi Vazirligining \nrasmiy boti " \
+           f"" \
            f"bo'lib undan foydalanshi uchun \nquyidagi kannallarga a'zo bo'lish kerak 👇: "
     keyboard_list = []
     for i in range(len(REQUIRED_CHANNELS)):
@@ -81,7 +82,7 @@ def get_schools_list(user: User):
             [
                 InlineKeyboardButton(text=schools[i].title,
                                      callback_data=school_name_callback.new(id=schools[i].id)),
-                InlineKeyboardButton(text=schools[i].title,
+                InlineKeyboardButton(text=schools[i + 1].title,
                                      callback_data=school_name_callback.new(id=schools[i + 1].id))
             ]
         )
