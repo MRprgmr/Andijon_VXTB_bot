@@ -1,5 +1,4 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.bot import api
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.bot.api import TelegramAPIServer
 

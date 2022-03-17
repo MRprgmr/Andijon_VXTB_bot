@@ -37,12 +37,12 @@ def get_back_button():
 
 def get_user_settings(user: User):
     """Return user settings"""
-    
+
     text = f"<b>👤 Foydalanuvchi:</b>   {user.full_name}\n" \
            f"<b>📞 Telefon raqam:</b>   {user.contact}\n" \
            f"<b>📍 Tuman:</b>   {user.district.title}\n" \
            f"<b>🏫 Maktab:</b>   {user.school}"
-    
+
     keyboard = ReplyKeyboardMarkup(
         row_width=1,
         keyboard=[
@@ -55,14 +55,15 @@ def get_user_settings(user: User):
         ],
         resize_keyboard=True,
     )
-    
+
     return text, keyboard
 
 
 def get_contact_send_template():
     """Return contact send text and button"""
 
-    text = "❗️ Botdan to'liq foydalanish uchun ro'yxatdan o'tish kerak.\n\nDavom etish uchun «Raqamni jo'natish» tugmasini bosing:"
+    text = "❗️ Botdan to'liq foydalanish uchun ro'yxatdan o'tish kerak.\n\nDavom etish uchun «Raqamni jo'natish» " \
+           "tugmasini bosing: "
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
             [

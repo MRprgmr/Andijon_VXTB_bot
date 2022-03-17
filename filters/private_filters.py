@@ -1,9 +1,11 @@
 from aiogram.dispatcher.filters import BoundFilter
 from aiogram.types import Message
+
 from Bot.models import User
 from data.config import ADMINS
 from keyboards.inline.private_templates import get_required_channels_checker
 from utils.core import get_user, stoa
+
 
 class full_name_filter(BoundFilter):
     async def check(self, message: Message):
@@ -23,12 +25,14 @@ class full_name_filter(BoundFilter):
             await message.answer("Familiya ismingizni ketma-ket kiriting, masalan:\n\n<b>👉   Alisherov Valisher</b>")
             return False
 
+
 class IsAdmin(BoundFilter):
     async def check(self, message: Message):
         if str(message.from_user.id) in ADMINS:
             return True
         else:
             return False
+
 
 class IsAllowed(BoundFilter):
     async def check(self, message: Message):
@@ -39,4 +43,3 @@ class IsAllowed(BoundFilter):
             return False
         else:
             return True
-        

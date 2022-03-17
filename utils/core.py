@@ -1,10 +1,12 @@
 import re
+
 from aiogram.types.message import Message
 from asgiref.sync import sync_to_async
+
 from Bot.models import User
 from data.config import CHANNELS
-from loader import dp
 from keyboards.default.private_buttons import get_main_menu_template
+from loader import dp
 
 
 def stoa(x): return sync_to_async(x)
@@ -20,7 +22,7 @@ async def get_user(bot_user) -> User:
     return user
 
 
-async def phone_number_validater(message: Message) -> str:
+async def phone_number_validater(message: Message) -> None:
     phone_number = message.contact.phone_number
     if phone_number[0] != '+':
         phone_number = '+' + phone_number
