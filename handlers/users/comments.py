@@ -42,4 +42,4 @@ async def send(message: Message, state: FSMContext):
     await message.answer("Izohlaringiz uchun raxmat, siz bilan tez orada aloqaga chiqishga xarakat qilamiz 😉.")
     await send_main_menu(user)
     for i in ADMINS:
-        await dp.bot.send_message(i, feedback_text)
+        await dp.bot.send_message(int(i), feedback_text)
