@@ -15,9 +15,8 @@ school_name_callback = CallbackData('school_name', 'id')
 def get_required_channels_checker(user):
     """Return checker message of channels that need to be joined"""
 
-    text = f"Assalomu alaykum, <b>{user.first_name}</b>,\nushbu bot Andijon Xalq Ta'limi Vazirligining \nrasmiy boti " \
-           f"" \
-           f"bo'lib undan foydalanshi uchun \nquyidagi kannallarga a'zo bo'lish kerak 👇: "
+    text = f"Assalomu alaykum, <b>{user.first_name}</b>,\nushbu bot Andijon xalq ta'limi boshqarmasining \nrasmiy boti " \
+           f"bo'lib, undan foydalanshi uchun \nquyidagi kannallarga a'zo bo'lish kerak 👇: "
     keyboard_list = []
     for i in range(len(REQUIRED_CHANNELS)):
         keyboard_list.append([InlineKeyboardButton(text=CHANNELS_NAMES[i], url=f"https://t.me/{REQUIRED_CHANNELS[i]}")])

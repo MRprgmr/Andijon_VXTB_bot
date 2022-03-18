@@ -2,7 +2,7 @@ from aiogram.dispatcher.filters import BoundFilter
 from aiogram.types import Message
 
 from Bot.models import User
-from data.config import ADMINS
+from data.config import ADMINS, CHANNELS
 from keyboards.inline.private_templates import get_required_channels_checker
 from utils.core import get_user, stoa
 
@@ -38,8 +38,14 @@ class IsAllowed(BoundFilter):
     async def check(self, message: Message):
         user: User = await get_user(message.from_user)
         if not user.is_allowed:
-            text, keyboard = await stoa(get_required_channels_checker)(user)
-            await message.answer(text=text, reply_markup=keyboard)
-            return False
+            return dict(key=False)
         else:
+            return dict(key=True)
+
+
+class IsMyChannel(BoundFilter):
+    async def check(self, message: Message):
+        if str(message.chat.id) in CHANNELS:
             return True
+        else:
+            return False

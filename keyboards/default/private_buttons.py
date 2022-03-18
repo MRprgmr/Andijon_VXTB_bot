@@ -82,21 +82,3 @@ def get_contact_send_template():
         resize_keyboard=True,
     )
     return text, keyboard
-
-# def get_user_settings_template(user: User):
-#     """Return keyboard and text when user press settings button"""
-
-#     text = _('settings', user.lang)
-#     keyboard = ReplyKeyboardMarkup(
-#         keyboard=[
-#             [
-#                 KeyboardButton(text=_('change_language_btn', user.lang)),
-#                 KeyboardButton(text=_('change_number_btn', user.lang))
-#             ],
-#             [
-#                 KeyboardButton(text=_('back', user.lang))
-#             ]
-#         ],
-#         resize_keyboard=True,
-#     )
-#     return text, keyboard

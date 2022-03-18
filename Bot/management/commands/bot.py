@@ -1,4 +1,5 @@
 from aiogram import executor
+from aiogram.types import AllowedUpdates
 from django.core.management.base import BaseCommand
 from loader import dp
 import middlewares, filters, handlers
@@ -19,4 +20,4 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
 
-executor.start_polling(dp, on_startup=on_startup)
+executor.start_polling(dp, on_startup=on_startup, allowed_updates=AllowedUpdates.all())

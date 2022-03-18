@@ -6,10 +6,17 @@ from asgiref.sync import sync_to_async
 from Bot.models import User
 from data.config import CHANNELS
 from keyboards.default.private_buttons import get_main_menu_template
+from keyboards.inline.private_templates import get_required_channels_checker
 from loader import dp
 
 
 def stoa(x): return sync_to_async(x)
+
+
+async def send_channels(user_id):
+    user: User = await stoa(User.objects.get)(user_id=user_id)
+    text, keyboard = await stoa(get_required_channels_checker)(user)
+    await dp.bot.send_message(chat_id=user_id, text=text, reply_markup=keyboard)
 
 
 async def get_user(bot_user) -> User:

@@ -13,7 +13,12 @@ class District(models.Model):
     def total_students(self):
         return str(self.user_set.all().count())
 
+    @property
+    def schools(self):
+        return str(self.school_set.all().count())
+
     total_students.fget.short_description = "Umumiy o'quvchilar"
+    schools.fget.short_description = "Maktablar"
 
     class Meta:
         verbose_name = "Tuman"

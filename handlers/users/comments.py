@@ -7,15 +7,18 @@ from filters.private_filters import IsAllowed
 from keyboards.default.private_buttons import cancel_button
 from loader import dp
 from states.private_states import FeedbackState
-from utils.core import get_user, send_main_menu
+from utils.core import get_user, send_main_menu, send_channels
 
 
 @dp.message_handler(IsAllowed(), text="💬 Fikr bildirish", state='*')
-async def send_feedback(message: Message):
+async def send_feedback(message: Message, key):
     """Ask user to enter the comment"""
-
-    await message.answer("Bot haqida fikringiz yoki taklifingiz bo'lsa izohda qoldiring: ", reply_markup=cancel_button)
-    await FeedbackState.feedback.set()
+    if key:
+        await message.answer("Bot haqida fikringiz yoki taklifingiz bo'lsa izohda qoldiring: ",
+                             reply_markup=cancel_button)
+        await FeedbackState.feedback.set()
+    else:
+        await send_channels(message.from_user.id)
 
 
 @dp.message_handler(text="🚫 Bekor qilish", state=FeedbackState.feedback)

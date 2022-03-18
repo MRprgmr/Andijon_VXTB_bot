@@ -14,7 +14,7 @@ admin.site.index_title = "Xush Kelibsiz"
 class UserAdmin(admin.ModelAdmin):
     """Bot User"""
 
-    list_display = ['first_name', 'username', 'contact', 'user_id', 'school']
+    list_display = ['first_name', 'username', 'contact', 'user_id', 'school', 'district']
     search_fields = ['user_id', 'username', 'fullname', 'contact']
     list_filter = [DistrictFilter]
 
@@ -36,5 +36,5 @@ class SchoolAdmin(admin.ModelAdmin):
 class DistrictAdmin(admin.ModelAdmin):
     """District admin"""
 
-    list_display = ['title', 'total_students']
+    list_display = ['title', 'total_students', 'schools']
     inlines = [SchoolInline]
