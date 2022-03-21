@@ -111,16 +111,28 @@ def available_subjects_list():
     keyboard_list = []
     subjects = Subject.objects.all()
 
-    for subject in subjects:
+    if subjects.count() & 1:
+        end = subjects.count()-1
+    else:
+        end = subjects.count()
+
+    for i in range(0, end, 2):
         keyboard_list.append(
             [
-                KeyboardButton(text=subject.title),
+                KeyboardButton(text=subjects[i].title),
+                KeyboardButton(text=subjects[i+1].title)
+            ]
+        )
+    if subjects.count() & 1:
+        keyboard_list.append(
+            [
+                KeyboardButton(text=subjects.last().title)
             ]
         )
     keyboard_list.append([KeyboardButton(text="🔙 Ortga")])
     keyboard = ReplyKeyboardMarkup(
         keyboard=keyboard_list,
         resize_keyboard=True,
-        row_width=1
+        row_width=2
     )
     return text, keyboard
