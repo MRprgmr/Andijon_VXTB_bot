@@ -18,3 +18,11 @@ class ConverterState(StatesGroup):
 
 class FeedbackState(StatesGroup):
     feedback = State()
+
+
+class DTMState(StatesGroup):
+    mode_selection = State()
+    subject_selection = State()
+    test_selection = State()
+    test_book_view = State()
+    test_checker = State()

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 from Bot.filters import DistrictFilter
-from Bot.models import User, District, School
+from Bot.models import User, District, School, Subject, Test
 
 admin.site.unregister(Group)
 # admin.site.site_header = settings.PROJECT_NAME
@@ -38,3 +38,15 @@ class DistrictAdmin(admin.ModelAdmin):
 
     list_display = ['title', 'total_students', 'schools']
     inlines = [SchoolInline]
+
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    """Subject admin"""
+    list_display = ['title']
+
+
+@admin.register(Test)
+class TestAdmin(admin.ModelAdmin):
+    """Test admin"""
+    list_display = ["test_id", "subject"]

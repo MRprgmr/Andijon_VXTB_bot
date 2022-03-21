@@ -60,3 +60,31 @@ async def check_all_channels(user: User):
     user.is_allowed = True
     await stoa(user.save)()
     return True
+
+
+async def get_student_result(c_a: str, s_a: str, test_number: int):
+    results = []
+    c_a = c_a.upper()
+    s_a = s_a.upper()
+    c = 0
+    for i in range(len(c_a)):
+        if c_a[i] == s_a[i]:
+            results.append("✅")
+            c += 1
+        else:
+            results.append("❌")
+    text = f"Test varianti raqami:  <b>{test_number}</b>\nTo'g'ri javoblar soni:  <b>{c}</b> ta;\nNoto'g'ri javoblar " \
+           f"soni:  <b>{len(c_a) - c}</b> ta;\n\n"
+
+    text += f"  1) {s_a[0]}  {results[0]}       11) {s_a[10]}   {results[10]}       21) {s_a[20]}   {results[20]}\n" \
+            f"  2) {s_a[1]}  {results[1]}       12) {s_a[11]}   {results[11]}       22) {s_a[21]}   {results[21]}\n" \
+            f"  3) {s_a[2]}  {results[2]}       13) {s_a[12]}   {results[12]}       23) {s_a[22]}   {results[22]}\n" \
+            f"  4) {s_a[3]}  {results[3]}       14) {s_a[13]}   {results[13]}       24) {s_a[23]}   {results[23]}\n" \
+            f"  5) {s_a[4]}  {results[4]}       15) {s_a[14]}   {results[14]}       25) {s_a[24]}   {results[24]}\n" \
+            f"  6) {s_a[5]}  {results[5]}       16) {s_a[15]}   {results[15]}       26) {s_a[25]}   {results[25]}\n" \
+            f"  7) {s_a[6]}  {results[6]}       17) {s_a[16]}   {results[16]}       27) {s_a[26]}   {results[26]}\n" \
+            f"  8) {s_a[7]}  {results[7]}       18) {s_a[17]}   {results[17]}       28) {s_a[27]}   {results[27]}\n" \
+            f"  9) {s_a[8]}  {results[8]}       19) {s_a[18]}   {results[18]}       29) {s_a[28]}   {results[28]}\n" \
+            f"10) {s_a[9]}  {results[9]}       20) {s_a[19]}   {results[19]}       30) {s_a[29]}   {results[29]}"
+
+    return text

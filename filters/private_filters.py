@@ -1,9 +1,8 @@
 from aiogram.dispatcher.filters import BoundFilter
 from aiogram.types import Message
 
-from Bot.models import User
+from Bot.models import User, Subject
 from data.config import ADMINS, CHANNELS
-from keyboards.inline.private_templates import get_required_channels_checker
 from utils.core import get_user, stoa
 
 
@@ -48,4 +47,13 @@ class IsMyChannel(BoundFilter):
         if str(message.chat.id) in CHANNELS:
             return True
         else:
+            return False
+
+
+class IsSubject(BoundFilter):
+    async def check(self, message: Message):
+        try:
+            titles = await stoa(Subject.objects.get)(title=message.text)
+            return True
+        except:
             return False

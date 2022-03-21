@@ -26,7 +26,7 @@ class District(models.Model):
 
 
 class School(models.Model):
-    """Model of schools"""
+    """Models of schools"""
 
     title = models.CharField(max_length=100, verbose_name="Nomi")
     district = models.ForeignKey(District, on_delete=models.CASCADE)
@@ -74,3 +74,34 @@ class User(models.Model):
     class Meta:
         verbose_name = "Foydalanuvchi"
         verbose_name_plural = "Foydalanuvchilar"
+
+
+class Subject(models.Model):
+    """Models of subjects for quiz"""
+
+    title = models.CharField(max_length=255, verbose_name="Nomi", unique=True)
+
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        verbose_name = "Fan"
+        verbose_name_plural = "Fanlar"
+
+
+class Test(models.Model):
+    """Models of tests"""
+
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name="Yo'nalish")
+    test_id = models.IntegerField(verbose_name="Variant raqami", unique=True)
+    answers = models.CharField(max_length=255, verbose_name="Javoblar")
+    source = models.FileField(verbose_name="Test", upload_to="tests/")
+
+    def __str__(self):
+        return str(self.test_id)
+
+    class Meta:
+        verbose_name = "Test"
+        verbose_name_plural = "Testlar"
+
+

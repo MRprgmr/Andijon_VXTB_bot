@@ -71,7 +71,7 @@ async def input_full_name(message: Message, state: FSMContext, key):
 
 
 @dp.callback_query_handler(IsAllowed(), district_callback.filter(), state=RegistrationState.district_state)
-async def input_district(call: types.CallbackQuery, state: FSMContext, callback_data: dict, key):
+async def input_district(call: types.CallbackQuery, callback_data: dict, key):
     """Get district name"""
     if key:
         user: User = await get_user(call.from_user)
@@ -87,7 +87,7 @@ async def input_district(call: types.CallbackQuery, state: FSMContext, callback_
 
 
 @dp.callback_query_handler(IsAllowed(), school_name_callback.filter(), state=RegistrationState.school_state)
-async def input_school_name(call: types.CallbackQuery, state: FSMContext, callback_data: dict, key):
+async def input_school_name(call: types.CallbackQuery, callback_data: dict, key):
     """Get users school name"""
     if key:
         user: User = await get_user(call.from_user)

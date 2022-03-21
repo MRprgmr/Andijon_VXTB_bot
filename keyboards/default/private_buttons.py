@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-from Bot.models import User
+from Bot.models import User, Subject
 
 
 def get_main_menu_template(lang):
@@ -12,7 +12,7 @@ def get_main_menu_template(lang):
         keyboard=[
             [
                 KeyboardButton(text="Lotin 🔄 Krill"),
-                KeyboardButton(text="📑 Yangiliklar")
+                KeyboardButton(text="✅ DTM Test")
             ],
             [
                 KeyboardButton(text="⚙️ Sozlamalar"),
@@ -80,5 +80,47 @@ def get_contact_send_template():
             ]
         ],
         resize_keyboard=True,
+    )
+    return text, keyboard
+
+
+def get_dtm_test_template():
+    """Return template when user selected dtm test"""
+
+    text = "Kerakli bo'limni tanlang:"
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="📥 Test olish"),
+                KeyboardButton(text="📝 Testni tekshirish")
+            ],
+            [
+                KeyboardButton(text="🔙 Ortga")
+            ]
+        ],
+        resize_keyboard=True,
+        row_width=2
+    )
+    return text, keyboard
+
+
+def available_subjects_list():
+    """Return list of subjects in the database"""
+
+    text = "Testni olmoqchi bo'lgan faningizni tanlang:"
+    keyboard_list = []
+    subjects = Subject.objects.all()
+
+    for subject in subjects:
+        keyboard_list.append(
+            [
+                KeyboardButton(text=subject.title),
+            ]
+        )
+    keyboard_list.append([KeyboardButton(text="🔙 Ortga")])
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=keyboard_list,
+        resize_keyboard=True,
+        row_width=1
     )
     return text, keyboard
