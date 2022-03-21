@@ -97,7 +97,7 @@ async def input_school_name(call: types.CallbackQuery, callback_data: dict, key)
         await stoa(user.save)()
         await call.message.delete()
         await call.message.answer(
-            text="🤖 Tabriklayman, siz botdan muvoffaqiyatli ro'yxatdan o'tdingiz,\n endi undan to'liq foydalana "
+            text="🤖 Tabriklayman, siz botdan muvaffaqiyatli ro'yxatdan o'tdingiz,\n endi undan to'liq foydalana "
                  "olasiz.")
         await send_main_menu(user)
     else:

@@ -73,7 +73,7 @@ def get_schools_list(user: User):
     keyboard_list = []
     district = user.district
     district: District
-    text = "O'qiyotgan muassasangiz nomini tanlang:"
+    text = "O'qiyotgan yoki ishlayotgan muassasangiz nomini tanlang:"
     schools = district.school_set.all()
     s_c = schools.count()
     if s_c % 2 == 1:

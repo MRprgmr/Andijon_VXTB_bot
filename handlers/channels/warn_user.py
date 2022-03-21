@@ -15,7 +15,7 @@ async def handler(message: types.ChatMemberUpdated):
         await stoa(user.save)()
         text, keyboard = await stoa(get_required_channels_checker)(user)
         await dp.bot.send_message(user.user_id,
-                                  text="⛔ Kechirasiz siz kannalarimizni tark etdingiz,\nbotdan to'liq foydalansih uchun"
+                                  text="⛔ Kechirasiz siz kanallarimizni tark etdingiz,\nbotdan to'liq foydalansih uchun"
                                        "\niltimos kanallarga qayta a'zo bo'ling!",
                                   reply_markup=keyboard
                                   )
