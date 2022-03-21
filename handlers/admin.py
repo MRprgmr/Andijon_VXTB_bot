@@ -60,7 +60,8 @@ async def cancel(message: Message, state: FSMContext):
     await message.answer("Canceled.", reply_markup=ReplyKeyboardRemove())
 
 
-@dp.message_handler(IsAdmin(), content_types=ct.TEXT | ct.AUDIO | ct.PHOTO | ct.VIDEO | ct.VIDEO_NOTE | ct.LOCATION,
+@dp.message_handler(IsAdmin(),
+                    content_types=ct.TEXT | ct.AUDIO | ct.PHOTO | ct.VIDEO | ct.VIDEO_NOTE | ct.LOCATION | ct.DOCUMENT,
                     state=BroadCastState.start)
 async def send_broadcast_start(message: Message, state: FSMContext):
     await message.answer("Broadcast started...")
