@@ -20,4 +20,4 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
 
-executor.start_polling(dp, on_startup=on_startup, allowed_updates=AllowedUpdates.all())
+executor.start_polling(dp, on_startup=on_startup, allowed_updates=AllowedUpdates.all(), skip_updates=True)

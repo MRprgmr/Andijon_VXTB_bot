@@ -76,7 +76,6 @@ async def send_test_book(call: CallbackQuery, callback_data: dict):
     """Send selected test book"""
 
     text, keyboard, document_path = await stoa(get_test_book)(callback_data["id"])
-    media = types.InputMedia()
 
     await call.message.delete()
     await call.message.answer_document(document=types.InputFile(document_path), caption=text, reply_markup=keyboard)

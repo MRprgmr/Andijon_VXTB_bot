@@ -7,14 +7,14 @@ from rest_framework.views import APIView
 from loader import dp
 
 loop = asyncio.get_event_loop()
+Dispatcher.set_current(dp)
+Bot.set_current(dp.bot)
 
 
 class UpdateBot(APIView):
     def post(self, request):
         try:
             update = types.Update(**request.data)
-            Dispatcher.set_current(dp)
-            Bot.set_current(dp.bot)
             loop.run_until_complete(dp.process_update(update))
         except Exception as e:
             print(e)
