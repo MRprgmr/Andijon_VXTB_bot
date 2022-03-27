@@ -1,5 +1,7 @@
 from django.db import models
 
+from utils.database import get_file_id
+
 
 class District(models.Model):
     """Model of District"""
@@ -95,13 +97,75 @@ class Test(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, verbose_name="Yo'nalish")
     test_id = models.IntegerField(verbose_name="Variant raqami", unique=True)
     answers = models.CharField(max_length=255, verbose_name="Javoblar")
-    source = models.FileField(verbose_name="Test", upload_to="tests/")
+    file = models.FileField(verbose_name="Test", upload_to="tests/", blank=True)
+    source_id = models.CharField(max_length=255)
 
     def __str__(self):
         return str(self.test_id)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.source_id = get_file_id(self.file.path)
+        super().save()
 
     class Meta:
         verbose_name = "Test"
         verbose_name_plural = "Testlar"
 
+
+class BookCategory(models.Model):
+    """Categories of books"""
+
+    title = models.CharField(max_length=255, verbose_name="Kategoriya nomi", unique=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Kategoriya"
+        verbose_name_plural = "Kategoriyalar"
+
+
+class Author(models.Model):
+    """Authors of books"""
+
+    full_name = models.CharField(max_length=255, verbose_name="Ismi")
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+        verbose_name = "Muallif"
+        verbose_name_plural = "Mualliflar"
+
+
+class Book(models.Model):
+    """Model of books"""
+
+    language_choices = [
+        ("english", "🇬🇧 English"),
+        ("uzbek", "🇺🇿 O'zbekcha"),
+        ("russian", "🇷🇺 Русский")
+    ]
+
+    category = models.ForeignKey(BookCategory, on_delete=models.CASCADE, verbose_name="Kategoriya")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Muallif")
+    title = models.CharField(max_length=255, verbose_name="Nomi")
+    language = models.CharField(max_length=100, choices=language_choices, default="uzbek", verbose_name="Til")
+    total_pages = models.IntegerField(verbose_name="Sahifalar soni")
+    published_date = models.DateField(verbose_name="Nashr etilgan yili")
+    file = models.FileField(verbose_name="Test", upload_to="books/", blank=True)
+    source_id = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.source_id = get_file_id(self.file.path)
+        super().save()
+
+    class Meta:
+        verbose_name = "Kitob"
+        verbose_name_plural = "Kitoblar"
 

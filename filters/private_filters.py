@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters import BoundFilter
 from aiogram.types import Message
 
-from Bot.models import User, Subject
+from Bot.models import User, Subject, BookCategory
 from data.config import ADMINS, CHANNELS
 from utils.core import get_user, stoa
 
@@ -53,7 +53,16 @@ class IsMyChannel(BoundFilter):
 class IsSubject(BoundFilter):
     async def check(self, message: Message):
         try:
-            titles = await stoa(Subject.objects.get)(title=message.text)
+            subject = await stoa(Subject.objects.get)(title=message.text)
+            return True
+        except:
+            return False
+
+
+class IsBookCategory(BoundFilter):
+    async def check(self, message: Message):
+        try:
+            category = await stoa(BookCategory.objects.get)(title=message.text)
             return True
         except:
             return False

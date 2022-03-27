@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 from django.conf import settings
 
-from Bot.models import District, User, Subject, Test
+from Bot.models import District, User, Subject, Test, BookCategory, Book
 from data.config import REQUIRED_CHANNELS, CHANNELS_NAMES
 
 media_root = settings.MEDIA_ROOT
@@ -11,7 +11,9 @@ media_root = settings.MEDIA_ROOT
 district_callback = CallbackData('district_option', 'id')
 school_name_callback = CallbackData('school_name', 'id')
 test_book_callback = CallbackData('test_book', 'id')
+book_callback = CallbackData('book', 'id')
 subject_callback = CallbackData('subject', 'title')
+category_callback = CallbackData('category', 'title')
 
 
 def get_required_channels_checker(user):
@@ -153,6 +155,71 @@ def get_test_book(test_id: str):
         ],
         row_width=1
     )
-    test_book_path = test.source.path
 
-    return text, keyboard, test_book_path
+    return text, keyboard, test.source_id
+
+
+def get_book(book_id: str):
+    """Send given book with description"""
+
+    languages = {
+        "english": "🇬🇧 Inglizcha",
+        "uzbek": "🇺🇿 O'zbekcha",
+        "russian": "🇷🇺 Ruscha"
+    }
+
+    book = Book.objects.get(id=int(book_id))
+    text = f"<b>Nomi:</b>  {book.title}\n" \
+           f"<b>Muallif:</b>  {book.author.full_name}\n" \
+           f"<b>Til:</b>  {languages[book.language]}\n" \
+           f"<b>Sahifalar soni:</b>  {book.total_pages} ta\n" \
+           f"<b>Sanasi:</b>   {book.published_date}"
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="🔙 Ortga", callback_data=category_callback.new(title=book.category.title))
+            ]
+        ],
+        row_width=1
+    )
+
+    return text, keyboard, book.source_id
+
+
+def books_in_category(category_title: str):
+    """Return all tests in given subject"""
+
+    text = f"<b>{category_title}</b> bo'limidagi kitoblar:"
+    category = BookCategory.objects.get(title=category_title)
+    books = category.book_set.all()
+    keyboard_list = []
+
+    if books.count() & 1:
+        end = books.count() - 1
+    else:
+        end = books.count()
+
+    for i in range(0, end, 2):
+        keyboard_list.append(
+            [
+                InlineKeyboardButton(text=books[i].title, callback_data=book_callback.new(id=books[i].id)),
+                InlineKeyboardButton(text=books[i + 1].title,
+                                     callback_data=book_callback.new(id=books[i + 1].id))
+            ]
+        )
+    if books.count() & 1:
+        keyboard_list.append(
+            [
+                InlineKeyboardButton(text=books.last().title,
+                                     callback_data=book_callback.new(id=books.last().id))
+            ]
+        )
+    keyboard_list.append([
+        InlineKeyboardButton(text="🔙 Ortga", callback_data="back")
+    ])
+    keyboard = InlineKeyboardMarkup(
+        row_width=2,
+        inline_keyboard=keyboard_list
+    )
+
+    return text, keyboard

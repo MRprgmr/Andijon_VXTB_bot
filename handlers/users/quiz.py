@@ -11,7 +11,7 @@ from states.private_states import DTMState
 from utils.core import send_channels, stoa, get_user, send_main_menu, get_student_result
 
 
-@dp.message_handler(IsAllowed(), text="✅ DTM Test", state="*")
+@dp.message_handler(IsAllowed(), text="✅ Testlar", state="*")
 async def dtm_test(message: types.Message, key):
     """Response when user press DTM Test button"""
 
@@ -75,10 +75,9 @@ async def back_to_subjects(call: CallbackQuery):
 async def send_test_book(call: CallbackQuery, callback_data: dict):
     """Send selected test book"""
 
-    text, keyboard, document_path = await stoa(get_test_book)(callback_data["id"])
-
+    text, keyboard, file_id = await stoa(get_test_book)(callback_data["id"])
     await call.message.delete()
-    await call.message.answer_document(document=types.InputFile(document_path), caption=text, reply_markup=keyboard)
+    await call.message.answer_document(document=file_id, caption=text, reply_markup=keyboard)
     await DTMState.test_book_view.set()
 
 
@@ -124,12 +123,13 @@ async def check_user_answers(message: types.Message):
     else:
         test_id = int(data[0][1:])
         try:
-            test = await stoa(Test.objects.get)(test_id=test_id)
+            test = await stoa(Test.objects.select_related("subject").get)(test_id=test_id)
             if len(data[1]) != len(test.answers):
                 answer = "🚫 Berilgan test varianti uchun javoblar soni mos emas."
             else:
-                answer = await get_student_result(test.answers, data[1], test_id)
-        except:
+                answer = await get_student_result(test.answers, data[1], test)
+        except Exception as er:
+            print(er)
             answer = "⚠ Kechirasiz siz bergan id raqam bo'yicha test topilmadi."
 
     await message.answer(text=answer)

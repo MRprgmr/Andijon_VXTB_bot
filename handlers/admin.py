@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+from aiogram.dispatcher.filters import RegexpCommandsFilter
 from aiogram.dispatcher.filters.builtin import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher.storage import FSMContext
@@ -21,11 +22,54 @@ async def show_admin_commands(message: Message):
     answer = "\n".join([
         "Admin commands:\n",
         "/broadcast — send broadcast to bot users.",
+        "/send_id — send a message to user through id"
     ])
     await message.answer(answer)
 
 
 # -----------------------------------------------------------------
+# send message to user by admin
+cancel_message = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1,
+                                     keyboard=[
+                                         [
+                                             KeyboardButton(
+                                                 text="❌ Cancel message"),
+                                         ],
+                                     ])
+
+
+class UserMessage(StatesGroup):
+    sending_confirmation = State()
+
+
+@dp.message_handler(IsAdmin(), RegexpCommandsFilter(regexp_commands=["send_([0-9]*)"]), state='*')
+async def send_message_to_user(message: Message, regexp_command, state: FSMContext):
+    await state.update_data(user_id=regexp_command.group(1))
+    await message.answer(text=f"Enter your message to be sent to the user whose id is: <code>{regexp_command.group(1)}</code>",
+                         reply_markup=cancel_message)
+    await UserMessage.sending_confirmation.set()
+
+
+@dp.message_handler(IsAdmin(), text="❌ Cancel message", state=UserMessage.sending_confirmation)
+async def cancel(message: Message, state: FSMContext):
+    await state.finish()
+    await message.answer("Canceled.", reply_markup=ReplyKeyboardRemove())
+
+
+@dp.message_handler(IsAdmin(),
+                    content_types=ct.TEXT | ct.AUDIO | ct.PHOTO | ct.VIDEO | ct.VIDEO_NOTE | ct.LOCATION | ct.DOCUMENT,
+                    state=UserMessage.sending_confirmation)
+async def send_assigned_message(message: Message, state: FSMContext):
+    async with state.proxy() as data:
+        user_id = data["user_id"]
+
+    await message.send_copy(chat_id=int(user_id))
+    await message.answer(f"Your message has been sent to the user <code>{user_id}</code>",
+                         reply_markup=ReplyKeyboardRemove())
+    await state.finish()
+
+
+# -------------------------------------------------------------------
 # broadcast ---------------------------------------------------------
 cancel_button = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1,
                                     keyboard=[
@@ -76,6 +120,6 @@ async def send_broadcast_start(message: Message, state: FSMContext):
                 logging.info(str(error))
         await asyncio.sleep(.02)
     finally:
-        await message.answer(f"Message sent to {count} users.", reply_markup=ReplyKeyboardRemove())
+        await message.answer(f"Message has been sent to {count} users.", reply_markup=ReplyKeyboardRemove())
     await state.finish()
 # ------------------------------------------------------------------------

@@ -38,9 +38,10 @@ async def send(message: Message, state: FSMContext):
     await state.finish()
     feedback_text = "\n".join([
         f"💬 New feedback from {message.from_user.get_mention(as_html=True)}",
-        f"<code>",
+        f"<b>ID:</b>  <code>{user.user_id}</code>\n"
+        f"<i>",
         message.text,
-        "</code>",
+        "</i>",
     ])
     await message.answer("Izohlaringiz uchun raxmat, siz bilan tez orada aloqaga chiqishga xarakat qilamiz 😉.")
     await send_main_menu(user)

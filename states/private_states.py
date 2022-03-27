@@ -26,3 +26,9 @@ class DTMState(StatesGroup):
     test_selection = State()
     test_book_view = State()
     test_checker = State()
+
+
+class LibraryState(StatesGroup):
+    category_selection = State()
+    book_selection = State()
+    book_view = State()
