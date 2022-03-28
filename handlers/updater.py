@@ -7,7 +7,10 @@ from rest_framework.views import APIView
 
 from loader import dp
 
-loop = asyncio.new_event_loop()
+try:
+    loop = asyncio.get_running_loop()
+except:
+    loop = asyncio.new_event_loop()
 
 
 class UpdateBot(APIView):
