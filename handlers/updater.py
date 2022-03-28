@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import types, Dispatcher, Bot
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from rest_framework.views import APIView
 
 from loader import dp
 
-loop = asyncio.get_event_loop()
+loop = asyncio.new_event_loop()
 
 
 class UpdateBot(APIView):
@@ -17,6 +18,6 @@ class UpdateBot(APIView):
             Bot.set_current(dp.bot)
             loop.run_until_complete(dp.process_update(update))
         except Exception as e:
-            print(e)
+            logging.info(e)
         finally:
             return Response(status=200)
