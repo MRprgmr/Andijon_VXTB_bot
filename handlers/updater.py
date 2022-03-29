@@ -11,8 +11,8 @@ from loader import dp
 loop = asyncio.get_event_loop()
 
 
-def process_request(request):
-    update = types.Update(**request.data)
+def process_request(data):
+    update = types.Update(**data)
     Dispatcher.set_current(dp)
     Bot.set_current(dp.bot)
     loop.run_until_complete(dp.process_update(update))
@@ -21,7 +21,7 @@ def process_request(request):
 class UpdateBot(APIView):
     def post(self, request):
         try:
-            runner = threading.Thread(target=process_request, args=(request,))
+            runner = threading.Thread(target=process_request, args=(request.data,))
             runner.start()
         except Exception as e:
             logging.info(e)
